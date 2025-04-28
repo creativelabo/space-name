@@ -1,0 +1,8 @@
+{
+  "name": "space-name-generator",
+  "version": "1.0.0",
+  "description": "宇宙ネームジェネレーター",
+  "dependencies": {
+    "node-fetch": "^2.6.7"
+  }
+}
