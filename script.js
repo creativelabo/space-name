@@ -16,24 +16,25 @@ document.addEventListener('DOMContentLoaded', function() {
         
         try {
             // 環境変数またはフォールバックからAPIキーを取得
-            const API_KEY = window.ENV?.DIFY_API_KEY || 'a381c806-c608-4be2-8431-d794e75cd5c2';
+            // 環境変数またはフォールバックからAPIキーを取得
+const API_KEY = 'a381c806-c608-4be2-8431-d794e75cd5c2';
             
-            const apiUrl = 'https://api.dify.ai/v1/chat-messages';
+const apiUrl = 'https://api.dify.ai/v1/chat-messages';
             
-            const response = await fetch(apiUrl, {
-                method: 'POST',
-                headers: {
-    'Content-Type': 'application/json',
-    'Authorization': `Bearer a381c806-c608-4be2-8431-d794e75cd5c2`  // ここでスペースが重要
-                },
-                body: JSON.stringify({
-                    inputs: {
-                        last_name: lastName,
-                        birth_date: birthDate
-                    },
-                    query: "宇宙ネームを生成してください"
-                })
-            });
+const response = await fetch(apiUrl, {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${API_KEY}`  // 変数を使用
+    },
+    body: JSON.stringify({
+        inputs: {
+            last_name: lastName,
+            birth_date: birthDate
+        },
+        query: "宇宙ネームを生成してください"
+    })
+});
             
             if (!response.ok) {
                 throw new Error(`APIエラー: ${response.status} ${response.statusText}`);
