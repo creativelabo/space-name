@@ -15,11 +15,10 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         
         try {
-            // API URLをローカル変数として設定（より安全な方法があればそちらを使用）
-            const apiUrl = 'https://api.dify.ai/v1/chat-messages';
+            // 環境変数またはフォールバックからAPIキーを取得
+            const API_KEY = window.ENV?.DIFY_API_KEY || 'a381c806-c608-4be2-8431-d794e75cd5c2';
             
-            // APIキーは環境変数から取得するようにNetlifyで設定
-            const API_KEY = process.env.DIFY_API_KEY || 'YOUR_FALLBACK_API_KEY';
+            const apiUrl = 'https://api.dify.ai/v1/chat-messages';
             
             const response = await fetch(apiUrl, {
                 method: 'POST',
