@@ -23,8 +23,8 @@ document.addEventListener('DOMContentLoaded', function() {
             const response = await fetch(apiUrl, {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${API_KEY}`
+    'Content-Type': 'application/json',
+    'Authorization': `Bearer a381c806-c608-4be2-8431-d794e75cd5c2`  // ここでスペースが重要
                 },
                 body: JSON.stringify({
                     inputs: {
