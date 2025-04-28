@@ -15,29 +15,26 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         
         try {
-            // 環境変数またはフォールバックからAPIキーを取得
-            // 環境変数またはフォールバックからAPIキーを取得
-const API_KEY = 'a381c806-c608-4be2-8431-d794e75cd5c2';
-            
-const apiUrl = 'https://api.dify.ai/v1/chat-messages';
-            
-const response = await fetch(apiUrl, {
-    method: 'POST',
-    headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${API_KEY}`  // 変数を使用
-    },
-    body: JSON.stringify({
-        inputs: {
-            last_name: lastName,
-            birth_date: birthDate
-        },
-        query: "宇宙ネームを生成してください"
-    })
-});
+            // Netlify Functionsを経由してリクエスト
+            const response = await fetch('/.netlify/functions/dify-proxy', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    inputs: {
+                        last_name: lastName,
+                        birth_date: birthDate
+                    },
+                    query: "宇宙ネームを生成してください"
+                })
+            });
             
             if (!response.ok) {
-                throw new Error(`APIエラー: ${response.status} ${response.statusText}`);
+                const errorData = await response.json();
+                console.error('エラー:', errorData);
+                alert('エラーが発生しました: ' + (errorData.error || response.statusText));
+                return;
             }
             
             const data = await response.json();
@@ -46,11 +43,11 @@ const response = await fetch(apiUrl, {
                 spaceNameDiv.textContent = data.answer;
                 resultDiv.classList.remove('hidden');
             } else {
-                throw new Error('APIレスポンスにデータがありません');
+                alert('エラーが発生しました: レスポンスに答えがありません');
             }
         } catch (error) {
             console.error('Error:', error);
-            alert(`通信エラーが発生しました: ${error.message}`);
+            alert('通信エラーが発生しました: ' + error.message);
         }
     }
 });
