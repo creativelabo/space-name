@@ -15,11 +15,14 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         
         try {
-            // ここでは環境変数からAPIキーを読み込む代わりに、Netlify Functionsを使用
-            const response = await fetch('/.netlify/functions/dify-proxy', {
+            // テスト用にDify APIを直接呼び出す（本番環境では非推奨）
+            const API_KEY = 'あなたのDify APIキーをここに入力'; // 注意：本番環境では公開しないでください
+            
+            const response = await fetch('https://api.dify.ai/v1/chat-messages', {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${API_KEY}`
                 },
                 body: JSON.stringify({
                     inputs: {
@@ -36,11 +39,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 spaceNameDiv.textContent = data.answer;
                 resultDiv.classList.remove('hidden');
             } else {
-                alert('エラーが発生しました。もう一度お試しください。');
+                alert('エラーが発生しました：' + JSON.stringify(data));
             }
         } catch (error) {
             console.error('Error:', error);
-            alert('通信エラーが発生しました。インターネット接続を確認してください。');
+            alert('通信エラーが発生しました：' + error.message);
         }
     }
 });
