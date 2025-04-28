@@ -15,10 +15,13 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         
         try {
-            // テスト用にDify APIを直接呼び出す（本番環境では非推奨）
-            const API_KEY = 'あなたのDify APIキーをここに入力'; // 注意：本番環境では公開しないでください
+            // API URLをローカル変数として設定（より安全な方法があればそちらを使用）
+            const apiUrl = 'https://api.dify.ai/v1/chat-messages';
             
-            const response = await fetch('https://api.dify.ai/v1/chat-messages', {
+            // APIキーは環境変数から取得するようにNetlifyで設定
+            const API_KEY = process.env.DIFY_API_KEY || 'YOUR_FALLBACK_API_KEY';
+            
+            const response = await fetch(apiUrl, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -33,17 +36,21 @@ document.addEventListener('DOMContentLoaded', function() {
                 })
             });
             
+            if (!response.ok) {
+                throw new Error(`APIエラー: ${response.status} ${response.statusText}`);
+            }
+            
             const data = await response.json();
             
             if (data.answer) {
                 spaceNameDiv.textContent = data.answer;
                 resultDiv.classList.remove('hidden');
             } else {
-                alert('エラーが発生しました：' + JSON.stringify(data));
+                throw new Error('APIレスポンスにデータがありません');
             }
         } catch (error) {
             console.error('Error:', error);
-            alert('通信エラーが発生しました：' + error.message);
+            alert(`通信エラーが発生しました: ${error.message}`);
         }
     }
 });
